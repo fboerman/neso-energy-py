@@ -1,0 +1,35 @@
+name: Run tests after commit
+
+on:
+  pull_request:
+  push:
+    branches:
+      - "**"
+
+jobs:
+  run-tests:
+    name: Run tests after commit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - name: Install the latest version of ruff
+        uses: astral-sh/ruff-action@v3
+        with:
+          version: "latest"
+          args: "--version"
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "latest"
+      - name: Run formatting checks
+        run: ruff check
+      - name: Install dependencies
+        run: |
+          uv sync --frozen --extra pandas
+      - name: Test with pytest
+        run: |
+          uv run pytest

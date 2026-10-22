@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "neso-energy-py"
+dynamic = ["version"]
+description = "A python wrapper for the neso.energy API"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+authors = [{ name = "Frank Boerman-Lima", email = "frank@amunanalytics.eu" }]
+dependencies = [
+    "requests",
+    "python-dateutil"
+]
+
+[project.optional-dependencies]
+pandas = ["pandas"]
+
+[dependency-groups]
+dev = [
+    "ruff",
+    "pre-commit",
+    "pytest"
+]
+
+[project.urls]
+Homepage = "https://github.com/fboerman/neso-energy-py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["nesoenergy"]
+
+[tool.hatch.version]
+source = "regex"
+path = "nesoenergy/nesoraw.py"
